@@ -1,4 +1,6 @@
 sandbox/
 deploy/
+a8-devel/
 .DS_Store
 *.zip
+a8-v0.4.2/

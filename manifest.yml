@@ -1,0 +1,5 @@
+---
+applications:
+- name: helloworld-docker
+  host: iw-helloworld-docker-dev
+  

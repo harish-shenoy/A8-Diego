@@ -1,0 +1,4 @@
+sandbox/
+deploy/
+.DS_Store
+*.zip

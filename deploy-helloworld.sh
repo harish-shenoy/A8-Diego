@@ -31,7 +31,7 @@ mv $GOPATH/$A8_SRC/amalgam8-$A8_VERSION $GOPATH/$A8_SRC/amalgam8
 
 cd $GOPATH/$A8_SRC/amalgam8
 
-make build.controller build.registry build.sidecar
+make build.sidecar
 
 ls -al bin/
 
@@ -39,9 +39,6 @@ mv bin/* $DEPLOY
 cp controller/schema.json $DEPLOY
 
 cd $PROJ_HOME
-
-#cf push a8controller -f manifest-binary.yml
-#cf push a8registry -f manifest-binary.yml
 
 # Restore parent space GOPATH
 export GOPATH=$GOPATH_BACKUP

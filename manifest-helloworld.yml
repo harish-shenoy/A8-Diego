@@ -1,0 +1,13 @@
+---
+  path: a8-v0.4.2/amalgam8/examples/apps/helloworld
+  applications:
+  - name: helloworld-V1
+    env:
+      A8_SERVICE: helloworld:1.0
+    host: iw-helloworld-v1-dev
+    command: ./a8sidecar --config config.yaml --endpoint_port $PORT --healthchecks http://localhost:$PORT/health
+  - name: helloworld-V2
+    env:
+      A8_SERVICE: helloworld:2.0
+    host: iw-helloworld-v2-dev
+    command: ./a8sidecar --config config.yaml --endpoint_port $PORT --healthchecks http://localhost:$PORT/health

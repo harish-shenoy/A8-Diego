@@ -1,0 +1,19 @@
+register: true
+
+endpoint:
+  host: http://iw-helloworld-dev.mybluemix.net
+  type: http
+
+registry:
+  url:   http://iw-a8registry-dev.mybluemix.net
+  poll:  5s
+
+controller:
+  url:   http://iw-a8controller-dev.mybluemix.net
+  poll:  5s
+
+commands:
+  - cmd: [ "python", "-u", "app.py" ]
+    on_exit: terminate
+
+log_level: debug

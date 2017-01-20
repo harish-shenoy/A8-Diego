@@ -11,7 +11,7 @@ However Bluemix did provide the A8 control plane via the now deprecated Service 
 A8 also provides intelligent content based routing. This capability facilitates features such as A/B testing and traffic management.
 
 ## Installing the A8 Control Plane
-BMX Public Diego docker deployment is disabled for security reasons. (See CF documentation). Hence the usual method of runing A8 control plane as a Docker image will not work on Bluemix Public.
+BMX Public Diego docker deployment is disabled for security reasons. (See [Docker Security Concerns in a multi-tenant environment]{http://docs.cloudfoundry.org/adminguide/docker.html#multi-tenant}). Hence the usual method of running A8 control plane as a Docker image will not work on Bluemix Public.
 
 To deploy A8 control plane, the registry and controller need to be deployed as CF applications.
 

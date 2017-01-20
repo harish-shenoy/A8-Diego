@@ -1,0 +1,3 @@
+web: ./a8sidecar --config config.yaml --endpoint_port $PORT --healthchecks http://localhost:$PORT/health
+
+#web: python -u app.py

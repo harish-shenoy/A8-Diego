@@ -1,0 +1,12 @@
+---
+applications:
+- name: a8controller-src
+  host: iw-a8controller-src-dev
+  path: sandbox/src/github.com/amalgam8/amalgam8/
+  buildpack: https://github.com/cloudfoundry/go-buildpack.git
+  command: ./a8controller --api_port $PORT
+- name: a8registry-src
+  host: iw-a8registry-src-dev
+  path: sandbox/src/github.com/amalgam8/amalgam8/
+  buildpack: https://github.com/cloudfoundry/go-buildpack.git
+  command: ./a8registry --api_port $PORT

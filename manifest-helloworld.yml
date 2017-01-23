@@ -1,19 +1,19 @@
 ---
-  path: a8-v0.4.2/amalgam8/examples/apps/helloworld
+  path: examples/apps/helloworld
+  memory: 128M
   applications:
   - name: helloworld-V1
     host: iw-helloworld-v1-dev
-    command: ./a8sidecar --config config.yaml
     env:
       A8_SERVICE: helloworld:1.0
       A8_ENDPOINT_HOST: iw-helloworld-v1-dev
-      A8_ENDPOINT_PORT: $PORT
-      A8_HEALTHCHECKS: http://localhost:$PORT/health
+  - name: helloworld-V1-2
+    host: iw-helloworld-v1-2-dev
+    env:
+      A8_SERVICE: helloworld:1.0
+      A8_ENDPOINT_HOST: iw-helloworld-v1-2-dev
   - name: helloworld-V2
     host: iw-helloworld-v2-dev
-    command: ./a8sidecar --config config.yaml
     env:
       A8_SERVICE: helloworld:2.0
       A8_ENDPOINT_HOST: iw-helloworld-v2-dev
-      A8_ENDPOINT_PORT: $PORT
-      A8_HEALTHCHECKS: http://localhost:$PORT/health

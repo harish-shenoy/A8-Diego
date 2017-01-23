@@ -28,7 +28,7 @@ def health():
 
 appport = os.environ.get('PORT')
 print ('Port = ')
-print(appport)
+print(os.environ.get('PORT'))
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', threaded=True, port=appport)
+    app.run(host='0.0.0.0', threaded=True, port=os.environ.get('PORT'))

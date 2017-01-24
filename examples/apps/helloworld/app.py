@@ -15,6 +15,7 @@
 import os
 from flask import Flask, request
 app = Flask(__name__)
+healthchecks = 0
 
 @app.route('/hello')
 def hello():
@@ -24,11 +25,16 @@ def hello():
 
 @app.route('/health')
 def health():
-    return 'Helloworld is healthy', 200
-
-appport = os.environ.get('PORT')
-print ('Port = ')
-print(os.environ.get('PORT'))
+    rc = 200
+    # Uncomment the following code to fail every 4, 5,& 6th healthcheck to demonstrate
+    # service deregistration and re-registration on healthcheck.
+#    global healthchecks
+#    healthchecks += 1
+#    if healthchecks > 3:
+#        rc = 500
+#    if healthchecks == 6:
+#        healthchecks = 0
+    return 'Helloworld is healthy', rc
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', threaded=True, port=os.environ.get('PORT'))

@@ -27,6 +27,7 @@ The method to load the a8sidecar from the amalgam8 project cannot be used by a s
 However, this does not install the nginx server. nginx for A8 is specially compiled to store the nginx configuration files in '/etc/nginx'. But the user space does not have privileges to create the directory. The only option here is a custom buildpack for a8sidecar loaded with the [multi-buildpack utility](https://bitbucket.org/cf-utilities/cf-buildpack-multi/src)
 
 25/01/2017: Advice from developers via slack is to use envoy instead of nginx. [Slack](https://amalgam8.slack.com/archives/users/p1485288948000398).
+26/01/2017: Proxy appears to work with master version in helloworld example application. Needs more testing.
 
 
 ### A8 Sidecar configuration

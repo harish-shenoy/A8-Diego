@@ -8,6 +8,7 @@
       A8_SERVICE: helloworld:1.0
       A8_ENDPOINT_HOST: iw-helloworld-v1-dev
 # Deploy a second "instance" of v1
+# i.e. same service name:tag, different endpoint host
   - name: helloworld-V1-2
     host: iw-helloworld-v1-2-dev
     env:

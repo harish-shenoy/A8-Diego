@@ -1,6 +1,7 @@
 #!/bin/bash
 
-A8_VERSION=0.4.2
+A8_VERSION=v0.4.2
+#A8_VERSION=$1
 A8_SRC=src/github.com/amalgam8
 PROJ_HOME=$PWD
 DEPLOY=$PROJ_HOME/deploy
@@ -16,8 +17,8 @@ export GOHOSTOS=linux
 export GOHOSTARCH=amd64
 export GOPATH=$PROJ_HOME/sandbox
 
-echo Downloading amalgam8-v$A8_VERSION
-#curl -L -o amalgam8.zip https://github.com/amalgam8/amalgam8/archive/v$A8_VERSION.zip
+echo Downloading amalgam8-$A8_VERSION
+#curl -L -o amalgam8.zip https://github.com/amalgam8/amalgam8/archive/$A8_VERSION.zip
 
 echo Creating directory structure $GOPATH/$A8_SRC
 mkdir -p $GOPATH/$A8_SRC
@@ -31,7 +32,7 @@ mv $GOPATH/$A8_SRC/amalgam8-$A8_VERSION $GOPATH/$A8_SRC/amalgam8
 
 cd $GOPATH/$A8_SRC/amalgam8
 
-make build.controller build.registry build.sidecar
+GOOS=linux GOARCH=amd64 make build.controller build.registry build.sidecar
 
 ls -al bin/
 

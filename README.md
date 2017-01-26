@@ -24,7 +24,10 @@ The sidecar project needs to run in the same process as the service, since CF do
 
 The method to load the a8sidecar from the amalgam8 project cannot be used by a service deployed to CF because the sidecar install script requires elevated privileges which are not available in the CF container OS stack. This project uses the a8sidecar binary which is built during the control plane build. The sidecar configuration should start the application process and supervise it. An alternative would be to use a multi-buildpack buildpack to configure a container with the application runtime as well as goLang for the sidecar truntime. Such a buildpack will be more complex, but will allow a native build of the sidecar for any supported CF Stack.
 
-However, this does not install the nginx server. nginx for A8 is specialy compiled to store the nginx configuration files in '/etc/nginx'. But the user space does not have privileges to create the directory. The only option here is a custom buildpack for a8sidecar loaded with the [multi-buildpack utility](https://bitbucket.org/cf-utilities/cf-buildpack-multi/src)
+However, this does not install the nginx server. nginx for A8 is specially compiled to store the nginx configuration files in '/etc/nginx'. But the user space does not have privileges to create the directory. The only option here is a custom buildpack for a8sidecar loaded with the [multi-buildpack utility](https://bitbucket.org/cf-utilities/cf-buildpack-multi/src)
+
+25/01/2017: Advice from developers via slack is to use envoy instead of nginx. [Slack](https://amalgam8.slack.com/archives/users/p1485288948000398).
+
 
 ### A8 Sidecar configuration
 In a CF environment, when registering the service in A8, the host name for the service should be set to the hostname as registered in goRouter, not the host or IP address of the container. If it is not set, the service registry may not be able to distinguish between service instances. This will result in the service being deregistered when one instance fails, even if there is more than one instance executing.

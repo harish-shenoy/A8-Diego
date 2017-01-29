@@ -1,11 +1,11 @@
 ---
-path: a8-v0.4.2/amalgam8/bin
+path: deploy
 applications:
-- name: a8controller
-  host: iw-a8controller-dev
+- name: a8controller-02
+  host: iw-a8controller-dev-02
   buildpack: https://github.com/cloudfoundry/binary-buildpack.git
   command: ./a8controller --api_port $PORT
-- name: a8registry
-  host: iw-a8registry-dev
+- name: a8registry-02
+  host: iw-a8registry-dev-02
   buildpack: https://github.com/cloudfoundry/binary-buildpack.git
   command: ./a8registry --api_port $PORT

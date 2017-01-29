@@ -1,0 +1,87 @@
+language: go
+
+# Require Travis to use a docker-enabled virtualization environment for the build
+sudo: required
+services:
+  - docker
+
+# Go versions to build with
+go:
+    - 1.7.1
+
+env:
+    # Platforms to build for
+    - PLATFORM=linux/amd64
+
+before_install:
+    # Prepare for integration test (upgrade docker/docker-compose, and install a8ctl)
+    - if [ "$TRAVIS_BRANCH" == "master" ]; then
+        sudo apt-get update -qq;
+        sudo apt-get install -o Dpkg::Options::="--force-confold" --force-yes -y docker-engine;
+        sudo rm /usr/local/bin/docker-compose || exit 0;
+        curl -L https://github.com/docker/compose/releases/download/1.5.1/docker-compose-`uname -s`-`uname -m` > docker-compose;
+        chmod +x docker-compose;
+        sudo mv docker-compose /usr/local/bin;
+        sudo pip install git+https://github.com/amalgam8/a8ctl@master;
+      fi
+
+script:
+    # Need to set explicitly, as these are unset by 'gimme'
+    - export GOOS=${PLATFORM%/*}
+    - export GOARCH=${PLATFORM#*/}
+    
+    # Analyze, test and build the code
+    - make verify
+
+    # Run the integration test (master and PRs-to-master only)
+    - if [ "$TRAVIS_BRANCH" == "master" ]; then
+        export A8_CONTROLLER_URL=http://localhost:31200;
+        export A8_REGISTRY_URL=http://localhost:31300;
+        make test.integration;
+      fi
+      
+before_deploy: 
+    - make release
+    
+deploy:
+    
+    # Upload files to GitHub as release attachments
+    -   provider: releases
+        api_key: $GITHUB_TOKEN
+      
+        # Keep artifacts produced during the build
+        skip_cleanup: true
+    
+        # Upload anything under the release directory
+        file_glob: true
+        file: release/*
+
+        # Trigger only when building a tagged commit, on the origin repo
+        on:
+            tags: true
+            repo: amalgam8/amalgam8
+
+    # Push images to Docker Hub
+    -   provider: script
+        script: ./scripts/push_dockerhub.sh
+    
+        # Keep artifacts produced during the build
+        skip_cleanup: true
+            
+        # Trigger only when building a version-tagged commit, on the origin repo
+        on:
+            tags: true
+            repo: amalgam8/amalgam8
+            condition: $TRAVIS_TAG =~ v[0-9]+\.[0-9]+\.[0-9]+
+
+# Configure notifications
+notifications:
+    email:
+        on_success: never
+        on_failure: always
+    slack:
+        rooms:
+            - secure: "cq6+EH9bcPx2KkW8NW5gNj+KPJi0edXbVHr1gvfFsRhMWYkOjXgsJobErB1QRqXA3tsrmdJcxm1NYy/qM/Kr5zZ6dgW9+tvZwRPEEvrxA7W43ZF/lCdN6xQWiB7KW0/dXJtrJ3nWl0pczVSTeM+3jHCHdimFe/thYZNkR3e20brd4pJfCdV8gY5QhICXbodKdohUrkSNGYl4tzpUmjRUUUIbBXP2dEZQFUZDBDZexbPNLJfExouWj3ypeYySKyHAhXNQO4lLOcDETOU82e1WPjccAMdSn9BQzW7yXNxl/OJX9r0hr+BLVGe5ri2xdG9LyQ771EeO48deNabEpl78YCLzUV99dPvjcCithvNTwwBKQ2+z5u6jopHUzSY21B/O/ynfocw4aeMWoJR3dDC6tXdvAsb+LBtdNbSPwdI6fE6HthZb7U1IRm2izl6WgLyaDJDCM0PoJFNVcaL1XskHfm9C2wQX3Z3JFbfTtKsyMLImNQLTkJpyDqVPZTpz7jjDuNLvBGh4MM81Rgdcv9pCzz3QkSKtVTxZSAtCjym0xMhRjDu1MqWZDrg2j8iLzciQaB4I7EuB6/HPx0TNPRjwKG/V0hHn+FSoW4UsLxnmmORScsBL40ZViagFo3HgLrGn/tjlXx5rGKFwxPHRJCHLPkD4/N172XT8WBMV9H1qcBA="
+        on_success: always
+        on_failure: always
+        on_pull_requests: true

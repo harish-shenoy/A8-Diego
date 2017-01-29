@@ -1,0 +1,18 @@
+# Intellij
+.idea/
+*.iml
+
+# Build
+bin/
+build/
+release/
+
+# Logs
+*.log
+
+# Vagrant folders
+*.vagrant
+
+# Ignore Java build related files and folders
+*.gradle
+*.war
